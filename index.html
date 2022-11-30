@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Flying Birds</title>
+
+        <style>
+            canvas {
+                display: block;
+                margin: 20px auto;
+                border: 1px solid red;
+            }
+        </style>
+
+    </head>
+
+    <body>
+        <canvas id="sky" width="900" height="250"></canvas>
+        <script>
+            //declaring global variables
+
+            function animate() {
+                draw();
+            }
+
+
+            function draw() {
+                bird.src = "bird" + birdcount + ".png";
+            }
+            animate();
+            var x = -100;		//initial position; bird starts off screen
+            var y = 120;		//initial position; 75 pixels from top
+            var speed = 2;	//moves 2 pixels for each rendering
+            var birdcount = 1;	//first image shown is ‘bird1’
+            function animate() {
+                reqAnimFrame = window.mozRequestAnimationFrame ||
+                    window.webkitRequestAnimationFrame ||
+                    window.msRequestAnimationFrame ||
+                    window.oRequestAnimationFrame;
+                reqAnimFrame(animate);
+
+                x += speed;
+                if (x == 1000) x = -100;			//restarts bird at 100
+                if (birdcount == 4) birdcount = 1;	//resets image counter
+                draw();
+            }
+
+            function draw() {
+                var canvas = document.getElementById("sky");
+                var context = canvas.getContext("2d");
+                context.clearRect(0, 0, 900, 250);	//empty old view
+
+                context.beginPath();
+                var gradient = context.createLinearGradient(0, 0, 0, 250);
+                gradient.addColorStop(0, "#7fb7f6");
+                gradient.addColorStop(1, "#d6ecff");
+                context.fillStyle = gradient;		//sky gradient color
+
+                var bird = new Image();			//load new image
+                bird.src = "images/bird" + birdcount + ".png";
+                if (x % 20 == 0) { birdcount++; }		//increment “l” counter
+                context.fillRect(0, 0, 900, 250);		//background first
+                context.drawImage(bird, x, 20);	      	//image on top
+            }
+            animate();
+
+
+        </script>
+
+
+    </body>
+
+
+
+</html>
